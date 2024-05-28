@@ -1,32 +1,15 @@
-name: .NET CI
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+on: [push]
 
 jobs:
-  build:
+  hello_world_job:
     runs-on: ubuntu-latest
-
+    name: A job to say hello
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '7.x'  # Use the appropriate .NET version for your project
-
-    - name: Restore dependencies
-      run: dotnet restore src/YourProject.sln
-
-    - name: Build
-      run: dotnet build src/YourProject.sln --configuration Release --no-restore
-
-    - name: Test
-      run: dotnet test src/YourProject.sln --no-restore --verbosity normal
+      - name: Hello world action step
+        id: hello
+        uses: actions/hello-world-docker-action@v2
+        with:
+          who-to-greet: 'Mona the Octocat'
+      # Use the output from the `hello` step
+      - name: Get the output time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
